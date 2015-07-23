@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: CGI_auth
+Description: C CGI auth and so on Library
+Version: 0.1
+Libs: -L${libdir} -lCGI_auth
+Cflags: -I${includedir}

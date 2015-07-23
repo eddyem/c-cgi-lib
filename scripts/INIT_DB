@@ -1,0 +1,11 @@
+#!/bin/bash
+# login - root, пароль - pass
+rm -f user-pass
+cat > .tmp_ << EOF
+create table users(login TEXT, pass TEXT, level INTEGER, URL TEXT);
+insert into users values("root", "Il.wNxb1TAttpehC22XRfh1LQ/K.dkJEh0RKjoluWk4zJgTm8a/EdrUKw4wU43S.ROTEj3V54WJIPfE5c0WyM/", 0, "/");
+create table keyid(key TEXT, login TEXT, id TEXT, time REAL);
+.quit
+EOF
+sqlite3 user-pass < .tmp_
+rm -f .tmp_

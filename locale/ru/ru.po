@@ -1,0 +1,177 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid   ""
+msgstr  "Project-Id-Version: PACKAGE VERSION\n"
+        "Report-Msgid-Bugs-To: \n"
+        "POT-Creation-Date: 2011-07-20 21:51+0400\n"
+        "PO-Revision-Date: 2011-07-17 22:31+0300\n"
+        "Last-Translator: Edward V. Emelianov <eddy@sao.ru>\n"
+        "Language-Team: LANGUAGE <LL@li.org>\n"
+        "MIME-Version: 1.0\n"
+        "Content-Type: text/plain; charset=koi8-r\n"
+        "Content-Transfer-Encoding: 8bit\n"
+
+#. "Недопустимый уровень доступа"
+#: lib/CGI_auth.c:63
+msgid   "Bad level"
+msgstr  "Недопустимый уровень доступа"
+
+#. "Отсутствует наименование сервиса для регистрации"
+#: lib/CGI_auth.c:49
+msgid   "Bad service URL"
+msgstr  "Отсутствует наименование сервиса для регистрации"
+
+#. "Не могу создать файл"
+#: lib/CGI_auth.c:79
+msgid   "Can't create file"
+msgstr  "Не могу создать файл"
+
+#. "Не могу определить ваш IP-адрес"
+#: lib/CGI_auth.c:51
+msgid   "Can't define your IP"
+msgstr  "Не могу определить ваш IP-адрес"
+
+#. "Не могу сохранить файл"
+#: lib/CGI_auth.c:87
+msgid   "Can't save file"
+msgstr  "Не могу сохранить файл"
+
+#. "Поврежденный запрос"
+#: lib/CGI_auth.c:77
+msgid   "Corrupted query"
+msgstr  "Поврежденный запрос"
+
+#. "Ошибка базы данных"
+#: lib/CGI_auth.c:59
+msgid   "Database error"
+msgstr  "Ошибка базы данных"
+
+#. "Ошибка! %s.\n"
+#: lib/CGI_auth.c:111
+#, c-format
+msgid   "Error! %s.\n"
+msgstr  "Ошибка! %s.\n"
+
+#. "Файл существует"
+#: lib/CGI_auth.c:89
+msgid   "File exists"
+msgstr  "Файл существует"
+
+#. "Размер файла слишком велик"
+#: lib/CGI_auth.c:83
+msgid   "File size is too large"
+msgstr  "Размер файла слишком велик"
+
+#. "Пользователь с таким именем уже существует"
+#: lib/CGI_auth.c:69
+msgid   "Login busy"
+msgstr  "Пользователь с таким именем уже существует"
+
+#. "Ошибка обращения к памяти"
+#: lib/CGI_auth.c:75
+msgid   "Memory error"
+msgstr  "Ошибка памяти"
+
+#. "Не указан уровень доступа"
+#: lib/CGI_auth.c:61
+msgid   "No level"
+msgstr  "Не указан уровень доступа"
+
+#. "Не указан пароль"
+#: lib/CGI_auth.c:45
+msgid   "No password"
+msgstr  "Не указан пароль"
+
+#. "Отсутствует строка запроса"
+#: lib/CGI_auth.c:41
+msgid   "No query string"
+msgstr  "Отсутствует строка запроса"
+
+#. "Отсутствует идентификатор сессии"
+#: lib/CGI_auth.c:71
+msgid   "No session ID"
+msgstr  "Отсутствует идентификатор сессии"
+
+#. "Не указано имя пользователя"
+#: lib/CGI_auth.c:43
+msgid   "No user name"
+msgstr  "Не указано имя пользователя"
+
+#. "Запрос не содержит информации о файле"
+#: lib/CGI_auth.c:85
+msgid   "Query has no information about a file"
+msgstr  "Запрос не содержит информации о файле"
+
+#. "Размер запроса слишком велик"
+#: lib/CGI_auth.c:81
+msgid   "Query size is too large"
+msgstr  "Размер запроса слишком велик"
+
+#. "Неизвестная ошибка"
+#: lib/CGI_auth.c:91
+msgid   "Unknown error"
+msgstr  "Неизвестная ошибка"
+
+#. "Длина имени пользователя превышает 128 символов"
+#: lib/CGI_auth.c:65
+msgid   "User's name length is more than 128 symbols"
+msgstr  "Длина имени пользователя превышает 128 символов"
+
+#. "Длина пароля превышает 64 символа"
+#: lib/CGI_auth.c:67
+msgid   "User's password length is more than 64 symbols"
+msgstr  "Длина пароля превышает 64 символа"
+
+#. "Повреждена база данных пользователей"
+#: lib/CGI_auth.c:53
+msgid   "Users' database corrupted"
+msgstr  "Повреждена база данных пользователей"
+
+#. "Неверная пара имя-пароль"
+#: lib/CGI_auth.c:47
+msgid   "Wrong login/password"
+msgstr  "Неверная пара имя-пароль"
+
+#. "Вы не зарегистрированы"
+#: lib/CGI_auth.c:55
+msgid   "You aren't registered"
+msgstr  "Вы не зарегистрированы"
+
+#. "Вы не зарегистрированы на этом сервисе"
+#: lib/CGI_auth.c:57
+msgid   "You aren't registered in this service"
+msgstr  "Вы не зарегистрированы на этом сервисе"
+
+#. "Нельзя удалить пользователя root"
+#: lib/CGI_auth.c:73
+msgid   "You can't delete user root"
+msgstr  "Вы не можете удалить пользователя root"
+
+#~ msgid        "Bad file size"
+#~ msgstr       "Неверный размер файла"
+
+#, fuzzy
+#~ msgid        "Can't determine filename"
+#~ msgstr       "Не могу определить имя файла"
+
+#~ msgid        "Can't write temporary file"
+#~ msgstr       "Не могу создать временный файл"
+
+#~ msgid        "Exit suxess\n"
+#~ msgstr       "Выход успешен\n"
+
+#~ msgid        "File too large"
+#~ msgstr       "Файл слишком велик"
+
+#, fuzzy
+#~ msgid        "Malloc error"
+#~ msgstr       "Ошибка памяти"
+
+#~ msgid        "Stream header damaged"
+#~ msgstr       "Поврежден заголовок потока"
+
+#~ msgid        "Transmission error"
+#~ msgstr       "Ошибка передачи данных"

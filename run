@@ -1,0 +1,6 @@
+#!/bin/bash
+cmake -DHTTPS_DIR="/Data/Misc/SSL" -DSERVER_NAME="localhost" \
+	-DFILEDIR="/Data/Misc/html/tmp" -DDBNAME="$/Data/Misc/SSL/cgi-bin/user-pass" \
+	-DLOCALEDIR="/usr/share/locale" -DDEBUG=1 .
+make
+

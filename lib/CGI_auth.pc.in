@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: @AUTHLIB@
+Description: C CGI auth and so on Library
+Version: @AUTHLIB_VERSION@
+Libs: -L${libdir} -l@AUTHLIB@
+Cflags: -I${includedir}

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<!--
+Этот файл предназначен для демонстрации функций моей библиотечки:
+	* вход/выход
+	* назначение доп. функций при успешном входе и при выходе
+	* работа с CGI
+	* ...
+-->
+<head>
+<title>Проверка авторизации/аутентификации</title>
+<meta http-equiv="content-type" content="text/html; charset=koi8-r">
+<script src="https://localhost/pass.js" type="text/javascript"></script>
+<script type="text/javascript" >
+AU_test = function(){
+function $(id){ return document.getElementById(id);}
+// Эти функции будут выполняться при регистрации и выходе
+function auth_OK(){
+	$('test').innerHTML = "Auth OK";
+}
+function auth_EX(){
+	$('test').innerHTML = "Your leave system";
+}
+function run_test_(req){
+	// функция OnExit назначает функцию, которая будет выполнена после выхода
+	// из системы, ее можно воткнуть куда угодно (лишь бы до нажатия пользователем
+	// кнопочки "Выход")
+	var request = new XMLHttpRequest();
+	function parse_args(){
+		$('test').innerHTML = request.responseText;
+		delete request;
+	}
+	request.open("POST", "http://localhost/cgi-bin/auth_test", true);
+	request.onreadystatechange=function(){
+		if (request.readyState == 4){
+			if (request.status == 200){
+				parse_args();
+			}
+			else alert("Ошибка соединения");
+		}
+	}
+	request.send(req)
+}
+function fload(fileform){
+	Pass.message("Загружаю файл...", "yellow");
+	//fileform.submit();
+	//fileform.reset();
+}
+/*
+Функция OnAuth(fn) должна быть выполнена до функции getcookie, если вы хотите,
+чтобы функция fn выполнилась после успешной регистрации
+Функция getcookie без аргументов проверяет куки для текущей страницы и, если их
+нет, запускает процесс аутентификации; с аргументами (которых может быть сколько
+угодно) производится та же проверка, но еще и по кукам для каждого аргумента.
+*/
+function _ini(){
+	Pass.OnAuth(AU_test.auth_OK);
+	Pass.OnExit(AU_test.auth_EX);
+	Pass.OnLoad(function(){Pass.message("Файл загружен", "green");});
+	Pass.getcookie('http://localhost/cgi-bin/auth_test');
+}
+return{
+	auth_OK: auth_OK,
+	auth_EX: auth_EX,
+	run: run_test_,
+	init: _ini,
+	fload: fload
+	}
+}()
+</script>
+</head>
+<body onload="AU_test.init();">
+<div id="test">TEST</div>
+<input type="button" value="Click me" onclick="AU_test.run('test');"></input>
+<p>
+<label for="form"><b>Загрузить файлы</b></label>
+<form name='file__' action='cgi-bin/auth_test' onsubmit='AU_test.fload(document.file__);' method='post' enctype='multipart/form-data' target='_dummyframe'>
+<input type="radio" name="param" value="1" checked="true">Параметр 1</input><br>
+<input type="radio" name="param" value="2" >Параметр 2</input><br>
+<input type="radio" name="param" value="3" >Параметр 3</input><br>
+<input type="radio" name="param" value="4" >Параметр 4</input><br>
+<input type=file name="_file1" size=40><br>
+<button type="submit">Загрузить</button>
+</form>
+<iframe width=0 height=0 name="_dummyframe" style="border: 0px;"></iframe>
+</body>
+</html>

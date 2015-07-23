@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<style type="text/css">
+body{text-align:center; vertical-align: center;}
+.shadow{
+	position:absolute;
+	top:0;
+	display: none;
+	left:0;
+	width:100%;
+	height:100%;
+	background-color: lightGrey;
+	opacity: 0.5;
+}
+.B{font-weight: bold;}
+.M{margin-bottom: 5px;}
+.A{position: absolute; background-color: lightGrey;}
+.C{text-align:center; padding: 10px;}
+.R{text-align:right;}
+.L{text-align:left;}
+.btm{margin-top: 15px; color: red; position: fixed; bottom: 10px;
+	width: 50%; left: 25%;}
+td{border: 1px solid black; padding-right: 15px; padding-left: 15px;}
+th{font-weight: bold; text-align:center;}
+</style>
+<script src="/pass.js" type="text/javascript" language="javascript"></script>
+<script>
+Adm = function(){
+var user="", passwd="", level="", url="";
+const CGI_PATH = "https://localhost/cgi-bin/auth";
+function $(id){
+	return document.getElementById(id);
+}
+function parseErr(txt){
+	$('msg').innerHTML = "Ошибка!<p></p>" + txt.replace("\n", "<br>");
+	setTimeout(function(){$('msg').innerHTML = "";}, 3500);
+}
+function sendrequest(request, req_STR, onOK){
+	var timeout_id
+	request = new XMLHttpRequest();
+	request.open("POST", CGI_PATH, true);
+	request.setRequestHeader("Accept-Charset", "koi8-r");
+	request.overrideMimeType("multipart/form-data; charset=koi8-r");
+	request.setRequestHeader("Cookie", document.cookie);
+	request.onreadystatechange=function(){
+		if (request.readyState == 4){
+			if (request.status == 200){
+				clearTimeout(timeout_id);
+				onOK(request);
+			}
+			else{
+				clearTimeout(timeout_id);
+				parseErr("Ошибка передачи запроса. Попробуйте еще раз.");
+			}
+		}
+	}
+	request.send(req_STR);
+	timeout_id = setTimeout(function(){parseErr("Таймаут передачи запроса. Попробуйте еще раз.");}, 3000);
+}
+function run(){
+	var QS;
+	Pass.OnExit(function(){window.location.reload();});
+	var mst = $("maindv").style;
+	if(Pass.checkcookie())
+		mst.display = "block";
+	else{
+		mst.display = "none";
+		return;
+	}
+	$('userlist').innerHTML = "";
+	sendrequest(QS, "admin=lsusers", lsusers);
+}
+function lsusers(QS){
+	var ans = QS.responseText;
+	var pars = ans.split("\n");
+	var i, l, s;
+	$('userlist').innerHTML = "<tr><th>user</th><th>level</th><th>path</th><th></th><th></th></tr>";
+	for(i=0, l=pars.length; i < l; i++){
+		s = pars[i].split(";");
+		if(pars[i].length < 2) continue;
+		if(s.length != 3){
+			parseErr(ans+"<br>str="+s);
+			return;
+		}
+		addUsersString(s);
+	}
+	align_container($('container'));
+}
+function addUsersString(str){
+	var ulist = $('userlist');
+	var tstr = document.createElement('tr');
+	ulist.appendChild(tstr);
+	var u = str[0];
+	tstr.innerHTML = "<td class='B'>"+u+"</td><td>"+
+		str[1]+"</td><td>"+str[2]+"</td>"+
+		"<td onclick='Adm.delUser(\""+u+"\");'>delete</td> "+
+		"<td onclick='Adm.editUser(\""+u+"\",\""+str[1]+"\",\""+str[2]+"\");'>edit</td>";
+}
+function focusnext(arg){
+	var el = $(arg).parentNode.nextSibling;
+	if(el) el.lastChild.focus();
+	else $("addOK").focus();
+}
+function useradd(arg){
+	function pair(name){
+		var str = "<div class='R'>"+name+"<input type=text id="+
+			name+" onchange=\"Adm.focusnext('"+name+"');\""+
+			//" onblur=\"Adm."+name+"=$('"+name+"').value;\"
+			" value='"+eval(name)+"'></div>"
+		return str;
+	}
+	var div = document.createElement('div');
+	div.className = 'C A';
+	$("shadow").style.display = "block";
+	$("box").style.display = "block";
+	$("box").appendChild(div);
+	div.innerHTML = "<div class='C'>Добавить/изменить пользователя"+
+		pair("user")+pair("passwd")+pair("level")+pair("url")+
+		"</div><div class='C'><button id='addOK' onclick='Adm.addUser(\""+arg+"\");'>OK</button>"+
+		"<button onclick='Adm.cancelAdd();'>Отмена</button></div>";
+	align_container(div);
+	$("user").focus();
+}
+function chkAns(req, Msg){
+	if(req.responseText.length > 0){
+		parseErr(Msg);
+		return false;
+	}
+	else{
+		run();
+		return true;
+	}
+}
+function addUser(arg){
+	var request;
+	function cantadd(req){
+		if(chkAns(req, "не могу добавить/редактировать пользователя<br>"+req.responseText)){
+			$("shadow").style.display = "none";
+			$("box").innerHTML = "";
+		}
+	}
+	user=$("user").value; passwd=$("passwd").value;
+	level=$("level").value; url=$("url").value;
+	if(user==""){
+		parseErr("Отсутствует имя пользователя");
+		return;
+	}
+	if(passwd=="" && arg=="useradd"){
+		parseErr("Не задан пароль пользователя");
+		return;
+	}
+	if(level=="" || Number(level) < 0){
+		parseErr("Не задан или задан неверно уровень доступа пользователя");
+		return;
+	}
+	if(url==""){
+		parseErr("Не задан адрес доступных пользователю ресурсов (или \"/\", если доступно все)");
+		return;
+	}
+	sendrequest(request,
+				"admin="+arg+"&user="+user+"&passwd="+passwd+"&level="+level+"&URL="+url,
+				cantadd);
+	user = passwd = level = url = "";
+}
+function cancelAdd(){
+	user = passwd = level = url = "";
+	$("box").innerHTML = "";
+	$("shadow").style.display = "none";
+	$("box").style.display = "none";
+}
+function delUser(username){
+	var request;
+	function cantdel(req){
+		chkAns(req, "не могу удалить пользователя<br>"+req.responseText);
+	}
+	sendrequest(request, "admin=userdel&user="+username, cantdel);
+}
+function editUser(username, ulevl, uurl){
+	user = username; passwd = "";
+	level = ulevl; url = uurl;
+	useradd("usermod");
+}
+function align_container(blk){
+	var st = blk.style;
+	var w = blk.clientWidth, h = blk.clientHeight;
+	var W = document.body.clientWidth, H = document.body.clientHeight;
+	st.left = (W>w) ? (W-w)/2+"px" : "0px";
+	st.top = (H-h>50) ? "50px" : "10px";
+}
+return{
+	run: run,
+	path: CGI_PATH,
+	useradd: useradd,
+	addUser: addUser,
+	delUser: delUser,
+	editUser: editUser,
+	cancelAdd: cancelAdd,
+	focusnext: focusnext,
+	};
+}();
+</script>
+<title>Управление пользователями</title>
+</head>
+<body onload="Pass.OnAuth(Adm.run); Pass.getcookie(Adm.path);">
+<div class="C A" id="container">
+<div style="display: none;" id="maindv">
+<div class="B M C" onclick="Adm.useradd('useradd');">Новый пользователь</div>
+<table><tbody id="userlist">
+</tbody></table>
+<div class="B M C" onclick="Adm.useradd('useradd');">Новый пользователь</div>
+</div></div>
+<div id="shadow" class="shadow"></div>
+<div id="msg" class="C btm"></div>
+<div id="box"></div>
+</body>
+</html>

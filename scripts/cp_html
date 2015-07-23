@@ -1,0 +1,6 @@
+#!/bin/sh
+for file in ./html/*
+do
+	filename=$(basename $file)
+	sed 's/SERVER-NAME/$1/g' $file > $2/$filename
+done
